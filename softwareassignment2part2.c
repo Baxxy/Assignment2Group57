@@ -1,15 +1,11 @@
 //Richard Otroshchenko
-//06/03/17
+//07/03/17
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 #include <math.h>
-//Program to generate the list of players using the user's input.
-//Also generates the stats of those players.
-//Generates a random list of slots.
-//Assigns players to these slots.
-//Searches for where and whether each player can move/attack.
+//COMPLTETED PROGRAM, ALTHOUGH WITHOUT DEBUGGING OR PRETTY COLOURS.
 
 int slotNum; //Slot Stuff.
 	typedef struct Slots
@@ -207,6 +203,11 @@ for(int i=0;i<numplayers;i++)
 
 	printf("\nWhat would you like to do?. Press 1 to move or 2 to attack.\n");
 	scanf("%d", &turnchoice);
+	if(turnchoice!=1 && turnchoice!=2)
+	{
+		perror("Wrong input.\n");
+		return -1;
+	}
 	if(turnchoice==1)
 		{
 			if(moveup == 1 && movedown == 1)
@@ -214,6 +215,11 @@ for(int i=0;i<numplayers;i++)
 				printf("Do you want to move up to slot %d,%s or down to slot %d,%s?\n", s[playerlist[i].position].position,s[playerlist[i].position].type, s[playerlist[i].position-2].position,s[playerlist[i].position-2].type);
 				printf("Press 1 for up or 2 for down.\n");
 				scanf("%d", &movechoice);
+				if(movechoice!=1 && movechoice!=2)
+				{
+					perror("Wrong input.\n");
+					return -1;
+				}
 			}else if(moveup == 1 && movedown == 0)
 			{
 				movechoice = 1;
@@ -228,11 +234,67 @@ for(int i=0;i<numplayers;i++)
 			{
 				strcpy(playerlist[i].slot,s[playerlist[i].position].type);
 				playerlist[i].position = s[playerlist[i].position].position;
+				if(playerlist[i].slot[0] == 'H')
+				{
+					if(playerlist[i].dexterity<50)
+					{
+						playerlist[i].strength -= 10;
+						printf("You lost 10 strength.\n");
+						if(playerlist[i].strength<0)
+						{
+							playerlist[i].strength = 0;
+						}
+					}else if(playerlist[i].dexterity>=60)
+					{
+						playerlist[i].strength += 10;
+						printf("You gained 10 strength.\n");
+					}
+				}else if(playerlist[i].slot[0] == 'C')
+				{
+					if(playerlist[i].smartness>60)
+					{
+						playerlist[i].magicskills += 10;
+						printf("You gained 10 magicskills.\n");
+					}else if(playerlist[i].smartness<=50)
+					{
+						playerlist[i].dexterity -= 10;
+						printf("You lost 10 dexterity.\n");
+					}
+				}
 			}else if(movechoice==2)
 			{
 				strcpy(playerlist[i].slot,s[playerlist[i].position-2].type);
 				playerlist[i].position = s[playerlist[i].position-2].position;
+				if(playerlist[i].slot[0] == 'H')
+				{
+					if(playerlist[i].dexterity<50)
+					{
+						playerlist[i].strength -= 10;
+						printf("You lost 10 strength.\n");
+						if(playerlist[i].strength<0)
+						{
+							playerlist[i].strength = 0;
+						}
+					}else if(playerlist[i].dexterity>=60)
+					{
+						playerlist[i].strength += 10;
+						printf("You gained 10 strength.\n");
+					}
+				}else if(playerlist[i].slot[0] == 'C')
+				{
+					if(playerlist[i].smartness>60)
+					{
+						playerlist[i].magicskills += 10;
+						printf("You gained 10 magicskills.\n");
+					}else if(playerlist[i].smartness<=50)
+					{
+						playerlist[i].dexterity -= 10;
+						printf("You lost 10 dexterity.\n");
+					}
+				}
 			}
+			printf("New position of player %d: %d,%s\n",i+1,playerlist[i].position,playerlist[i].slot);
+
 
 		}else if(turnchoice==2)
 		{
@@ -241,6 +303,11 @@ for(int i=0;i<numplayers;i++)
 				printf("You can attack either %s or %s.\n", enemy1,enemy2);
 				printf("Press 1 to attack %s or 2 to attack %s.\n", enemy1, enemy2);
 				scanf("%d", &attackchoice);
+				if(attackchoice!=1 && attackchoice!=2)
+				{
+					perror("Wrong input.\n");
+					return -1;
+				}
 			}else if(yattack == 1 && xattack == 0)
 		  {
 		    printf("You will attack %s.\n", enemy1);
@@ -288,9 +355,6 @@ for(int i=0;i<numplayers;i++)
 {
 	printf("%s (%s, %d)\n", playerlist[i].playername, playerlist[i].playertype, playerlist[i].lifepoints);
 }
-
-
-
 
 
 return 0;
